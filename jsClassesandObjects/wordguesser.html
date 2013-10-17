@@ -1,0 +1,68 @@
+<html>
+<body>
+    <input type="text" id="letterGuess"=>give me input</input>
+    <button onclick="onClick()">Submit</button>
+    <script>
+ 
+        var secretLetters = ['P', 'O', 'P', 'E'];
+        var matchedLetters = ['_', '_', '_', '_'];
+        var rightLetters = 
+        var wrongLetters = [];
+        
+
+        function onClick() {
+
+            var userGuess = document.getElementById("letterGuess").value;
+
+            guessLetter(userGuess);
+
+        }
+
+        function checkMatchedLetters(checkGuess) {
+            for (var i = 0; i < matchedLetters.length; i ++) {
+
+                if (matchedLetters[i] != checkGuess) {
+                    matchedLetters[i] = checkGuess;
+                } 
+            }
+        }
+
+        function guessLetter(guess) {
+
+            var goodGuessTag = false;
+
+            for (var i = 0; i < secretLetters.length; i ++) {
+
+                if (guess === secretLetters[i]) {
+                    // matchedLetters[i] = guess;
+                    checkMatchedLetters(guess);
+                    goodGuessTag = true;
+
+                } else {
+                    continue;
+                }
+            }
+
+            if (goodGuessTag == true) {
+                console.log("GOOD GUESS!");
+                console.log(matchedLetters);
+            }
+
+            if (goodGuessTag == false) {
+                wrongLetters.push(guess);
+                console.log("NOPE!");
+                console.log("Letters guessed so far: " + wrongLetters);
+            }
+
+            if (matchedLetters === secretLetters) {
+                console.log("YOU WIN!!!");
+            }
+        }
+            
+    </script>
+</body>
+</html>
+
+<!-- dont let user guess a number 2x -->
+<!-- hangman count -->
+<!-- lost after 6 -->
