@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Book List</title>
+    </head>
+    <body>
+        <h1>My Book List</h1>
+        <ul id = "titles">
+            <!-- js gonna add them books --> 
+        </ul>
+
+        <label for = "book_title">Book Title:</label>
+        <input id = "book_title"></input><br>
+        <label for = "book_genre">Book Genre:</label>
+        <input id = "book_genre"></input><br>
+        <label for = "book_author">Book Author:</label>
+        <input id = "book_author"></input><br>
+
+        <input type = "radio" id = 'read' value='Read'/> Read
+        <input type = "radio" id = 'read' value='Not Read'/>Not Read<br>
+
+        <button id = "submit_new_book">Add new book!</button> 
+
+
+       <script>
+            var Booklist = function() {
+
+                this.unreadBooks = [];
+                this.readBooks = [];
+
+                this.addBook = function(newBook){
+                    this.unreadBooks.push(newBook);
+                    this.bookShelf = this.unreadBooks.concat(this.readBooks);
+                    this.booksRead = this.readBooks.length;
+                    this.booksNotRead = this.unreadBooks.length;
+                    this.updateLists();
+                    return console.log(newBook._title + " added successfully.");
+                };
+
+                this.finishCurrentBook = function() {
+                    this.currentBook.readDate = new Date();
+                    this.currentBook.read = true;
+                    this.readBooks.push(this.currentBook);
+                    this.currentBook = this.unreadBooks.shift();
+                    this.updateLists();
+                    return console.log("Finished " + this.previousBook._title + '.');
+                };
+
+                this.updateLists = function() {
+                    this.currentBook = this.unreadBooks[0];
+                    this.nextBook = this.unreadBooks[1];
+                    this.previousBook = this.readBooks[this.readBooks.length-1];
+                };
+            };
+
+
+            var Book = function(_title, genre, author, read){
+                this._title = _title;
+                this.genre = genre;
+                this.author = author;
+                this.read = false;
+                this.readDate = null;
+            };
+
+
+            var book1 = new Book("The Magical Pope Dragon", "Fantasy", "Nick A", false);
+            var book2 = new Book("The Magical Pope Unicorn", "Fantasy", "Nick A", false);
+            var book3 = new Book("The Mostly-Magical Pope Cat", "Fantasy", "Nick A", false);
+            var book4 = new Book("The Not-Really-Magical-At-All Cat", "Non-Fiction", "Nick A", false);
+
+            var nicksBookList = new Booklist();
+
+            nicksBookList.addBook(book1);
+            nicksBookList.addBook(book2);
+            nicksBookList.addBook(book3);
+            nicksBookList.addBook(book4);
+
+
+            // acces the body tag and make a ul node   
+            var titleNode = document.getElementById('titles');
+
+            for (var i = 0; i < nicksBookList.bookShelf.length; i++) {
+                // add to webpage as a li of a ul:
+                var newBook = document.createElement('li');
+                var bookTitle = document.createTextNode(nicksBookList.bookShelf[i]._title);
+                newBook.appendChild(bookTitle);
+                titleNode.appendChild(newBook);
+            };
+
+            
+            var submitNewBook = document.getElementById('submit_new_book');
+
+            function onClick(event) {
+                var submittedTitle = document.getElementById("book_title").value;
+                var submittedGenre = document.getElementById("book_genre").value;
+                var submittedAuthor = document.getElementById("book_author").value;
+                var submittedReadStatus = document.getElementById("read").value;
+
+                var book = new Book(submittedTitle, submittedGenre, submittedAuthor, submittedReadStatus);
+                nicksBookList.addBook(book);
+
+                var newBook = document.createElement('li');
+                var bookTitle = document.createTextNode(book._title);
+                newBook.appendChild(bookTitle);
+                titleNode.appendChild(newBook);
+
+                document.getElementById("book_title").value = null;
+                document.getElementById("book_genre").value = null;
+                document.getElementById("book_author").value = null;
+                document.getElementById("read").value = null;
+            }
+
+            submitNewBook.addEventListener('click', onClick, false);
+
+
+        </script>
+    </body>
+</html>
